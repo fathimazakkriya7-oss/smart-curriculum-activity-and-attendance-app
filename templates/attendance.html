@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mark Attendance</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f4f8;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .nav a {
+            margin: 10px;
+            text-decoration: none;
+            padding: 8px 12px;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 70%;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .status {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Mark Attendance</h1>
+
+<div class="nav">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/student">Students</a>
+    <a href="/report">Report</a>
+</div>
+
+<form method="POST" action="/save_attendance">
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Register No</th>
+        <th>Status</th>
+    </tr>
+
+    {% for student in students %}
+    <tr>
+        <td>{{ student[1] }}</td>
+        <td>{{ student[2] }}</td>
+        <td>
+            <div class="status">
+                <label>
+                    <input type="radio" name="{{ student[2] }}" value="Present" required>
+                    Present
+                </label>
+
+                <label>
+                    <input type="radio" name="{{ student[2] }}" value="Absent">
+                    Absent
+                </label>
+            </div>
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+<button type="submit">Save Attendance</button>
+
+</form>
+
+</body>
+</html>

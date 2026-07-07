@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Attendance Report</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f4f8;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 20px;
+        }
+
+        .nav a {
+            margin: 10px;
+            text-decoration: none;
+            padding: 8px 12px;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+
+        table {
+            margin: auto;
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 80%;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Attendance Report</h1>
+
+<div class="nav">
+    <a href="/dashboard">Dashboard</a>
+    <a href="/student">Students</a>
+    <a href="/attendance">Attendance</a>
+</div>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Register No</th>
+        <th>Present Days</th>
+        <th>Total Days</th>
+        <th>Percentage</th>
+    </tr>
+
+    {% for r in records %}
+    <tr>
+        <td>{{ r[0] }}</td>
+        <td>{{ r[1] }}</td>
+        <td>{{ r[2] }}</td>
+        <td>{{ r[3] }}</td>
+        <td>{{ r[4] }}%</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>
