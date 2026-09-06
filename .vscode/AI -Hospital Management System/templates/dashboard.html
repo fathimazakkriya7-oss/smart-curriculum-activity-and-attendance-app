@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>AI Hospital Management System</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f7fb;
+        }
+
+        header {
+            background-color: #1976d2;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px #ccc;
+        }
+
+        .icon {
+            font-size: 40px;
+        }
+
+        .card h2 {
+            color: #1976d2;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        button {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background-color: #125aa0;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+        }
+
+        @media (max-width: 900px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>🏥 AI Hospital Management System</h1>
+
+    <p>Smart Healthcare Management Dashboard</p>
+
+</header>
+
+
+<div class="container">
+
+    <h2>Dashboard</h2>
+
+
+    <div class="cards">
+
+
+        <!-- PATIENTS -->
+
+        <div class="card">
+
+            <div class="icon">🧑‍🤝‍🧑</div>
+
+            <h2>Patients</h2>
+
+            <p>Manage patient records</p>
+
+            <a href="/patients">
+                <button>View Patients</button>
+            </a>
+
+        </div>
+
+
+        <!-- DOCTORS -->
+
+        <div class="card">
+
+            <div class="icon">👨‍⚕️</div>
+
+            <h2>Doctors</h2>
+
+            <p>Manage doctors</p>
+
+            <a href="/doctors">
+                <button>View Doctors</button>
+            </a>
+
+        </div>
+
+
+        <!-- APPOINTMENTS -->
+
+        <div class="card">
+
+            <div class="icon">📅</div>
+
+            <h2>Appointments</h2>
+
+            <p>Schedule appointments</p>
+
+            <a href="/appointments">
+                <button>View Appointments</button>
+            </a>
+
+        </div>
+
+
+        <!-- AI -->
+
+        <div class="card">
+
+            <div class="icon">🤖</div>
+
+            <h2>AI Prediction</h2>
+
+            <p>Analyze patient symptoms</p>
+
+            <a href="/ai-prediction">
+                <button>Predict Disease</button>
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="footer">
+
+        <p>AI-Based Hospital Management System | College Project</p>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

@@ -1,26 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Student Activities</title>
+    <title>Smart Curriculum</title>
 
     <style>
-
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
         }
 
         body {
-            margin: 0;
             background: #f4f7fb;
-            color: #1e293b;
+            color: #222;
         }
 
         .container {
@@ -29,15 +25,15 @@
             margin: 30px auto;
         }
 
-        .header {
+        .top {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
         }
 
-        .header h1 {
-            margin: 0;
+        .top h1 {
+            color: #1e293b;
         }
 
         .back {
@@ -58,29 +54,30 @@
 
         .card h2 {
             margin-bottom: 20px;
+            color: #334155;
         }
 
         form {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
         }
 
-        input,
-        select {
+        input, select {
             padding: 12px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         button {
             border: none;
             background: #2563eb;
             color: white;
-            padding: 12px 18px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 15px;
         }
 
         button:hover {
@@ -92,19 +89,34 @@
             border-collapse: collapse;
         }
 
-        th,
-        td {
-            padding: 14px;
+        th, td {
+            padding: 15px;
             border-bottom: 1px solid #e2e8f0;
             text-align: left;
         }
 
         th {
             background: #f1f5f9;
+            color: #334155;
         }
 
-        .score {
+        .completed {
+            color: green;
             font-weight: bold;
+        }
+
+        .pending {
+            color: #d97706;
+            font-weight: bold;
+        }
+
+        .status-btn {
+            background: #16a34a;
+            padding: 8px 14px;
+        }
+
+        .status-btn:hover {
+            background: #15803d;
         }
 
         .flash {
@@ -115,147 +127,79 @@
             margin-bottom: 20px;
         }
 
-        @media(max-width: 900px) {
-
-            form {
-                grid-template-columns: 1fr 1fr;
-            }
-
-        }
-
-        @media(max-width: 600px) {
-
+        @media(max-width: 700px) {
             form {
                 grid-template-columns: 1fr;
             }
 
-            .header {
+            .top {
                 flex-direction: column;
-                align-items: flex-start;
                 gap: 15px;
+                align-items: flex-start;
             }
 
             table {
                 font-size: 13px;
             }
-
         }
-
     </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="header">
-
-        <h1>🎯 Student Activity Management</h1>
+    <div class="top">
+        <h1>📚 Smart Curriculum Tracker</h1>
 
         <a href="/dashboard" class="back">
             ← Dashboard
         </a>
-
     </div>
 
-
+    <!-- Flash Messages -->
     {% with messages = get_flashed_messages() %}
-
         {% if messages %}
-
             {% for message in messages %}
-
                 <div class="flash">
                     {{ message }}
                 </div>
-
             {% endfor %}
-
         {% endif %}
-
     {% endwith %}
 
 
+    <!-- Add Curriculum Unit -->
     <div class="card">
 
-        <h2>➕ Add Student Activity</h2>
+        <h2>➕ Add Curriculum Unit</h2>
 
         <form method="POST">
 
-            <select name="student_id" required>
+            <select name="subject_id" required>
 
-                <option value="">
-                    Select Student
-                </option>
+                <option value="">Select Subject</option>
 
-                {% for student in students %}
+                {% for subject in subjects %}
 
-                    <option value="{{ student.id }}">
-
-                        {{ student.name }}
-                        - {{ student.reg_no }}
-
+                    <option value="{{ subject.id }}">
+                        {{ subject.subject_name }}
+                        ({{ subject.subject_code }})
                     </option>
 
                 {% endfor %}
 
             </select>
 
-
-            <select name="activity_name" required>
-
-                <option value="">
-                    Select Activity
-                </option>
-
-                <option value="Assignment">
-                    Assignment
-                </option>
-
-                <option value="Quiz">
-                    Quiz
-                </option>
-
-                <option value="Seminar">
-                    Seminar
-                </option>
-
-                <option value="Project">
-                    Project
-                </option>
-
-                <option value="Competition">
-                    Competition
-                </option>
-
-                <option value="Presentation">
-                    Presentation
-                </option>
-
-            </select>
-
-
             <input
-                type="number"
-                name="score"
-                placeholder="Score"
-                min="0"
-                max="100"
-                step="0.01"
+                type="text"
+                name="unit_name"
+                placeholder="Enter Unit Name"
                 required
             >
-
-
-            <input
-                type="date"
-                name="date"
-                required
-            >
-
 
             <button type="submit">
-                Add Activity
+                Add Unit
             </button>
 
         </form>
@@ -263,57 +207,80 @@
     </div>
 
 
+    <!-- Curriculum Table -->
     <div class="card">
 
-        <h2>📊 Activity Records</h2>
+        <h2>📖 Curriculum Units</h2>
 
-        {% if activities %}
+        {% if curriculum %}
 
         <table>
 
             <thead>
 
                 <tr>
-
-                    <th>Student</th>
-
-                    <th>Register No</th>
-
-                    <th>Activity</th>
-
-                    <th>Score</th>
-
-                    <th>Date</th>
-
+                    <th>Subject</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
 
             </thead>
 
-
             <tbody>
 
-                {% for activity in activities %}
+                {% for unit in curriculum %}
 
                 <tr>
 
                     <td>
-                        {{ activity.name }}
+                        <strong>
+                            {{ unit.subject_name }}
+                        </strong>
                     </td>
 
                     <td>
-                        {{ activity.reg_no }}
+                        {{ unit.unit_name }}
                     </td>
 
                     <td>
-                        {{ activity.activity_name }}
-                    </td>
 
-                    <td class="score">
-                        {{ activity.score }}
+                        {% if unit.status == "Completed" %}
+
+                            <span class="completed">
+                                ✅ Completed
+                            </span>
+
+                        {% else %}
+
+                            <span class="pending">
+                                🟡 Pending
+                            </span>
+
+                        {% endif %}
+
                     </td>
 
                     <td>
-                        {{ activity.date }}
+
+                        <a href="/curriculum/update/{{ unit.id }}">
+
+                            {% if unit.status == "Completed" %}
+
+                                <button class="status-btn">
+                                    Mark Pending
+                                </button>
+
+                            {% else %}
+
+                                <button class="status-btn">
+                                    Mark Completed
+                                </button>
+
+                            {% endif %}
+
+                        </a>
+
                     </td>
 
                 </tr>
@@ -327,7 +294,7 @@
         {% else %}
 
             <p>
-                No activities recorded yet.
+                No curriculum units added yet.
             </p>
 
         {% endif %}
@@ -337,5 +304,4 @@
 </div>
 
 </body>
-
 </html>

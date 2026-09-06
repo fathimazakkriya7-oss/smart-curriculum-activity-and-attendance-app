@@ -1,112 +1,388 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Mark Attendance</title>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Attendance</title>
 
     <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
         body {
-            font-family: Arial;
-            background: #f2f4f8;
-            text-align: center;
+            background: #f4f6f9;
+            padding: 30px;
         }
 
-        h1 {
-            margin-top: 20px;
+        .container {
+            max-width: 1100px;
+            margin: auto;
         }
 
-        .nav a {
-            margin: 10px;
-            text-decoration: none;
-            padding: 8px 12px;
-            background: #007bff;
+        .header {
+            background: #111827;
             color: white;
-            border-radius: 5px;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 25px;
         }
 
-        form {
-            margin-top: 20px;
+        .header h1 {
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #d1d5db;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 15px;
         }
 
         table {
-            margin: auto;
-            margin-top: 20px;
+            width: 100%;
             border-collapse: collapse;
-            width: 70%;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
 
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
         }
 
         th {
-            background: #007bff;
-            color: white;
+            background: #f3f4f6;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .radio-group label {
+            font-weight: normal;
+        }
+
+        .radio-group input {
+            width: auto;
+        }
+
+        .present {
+            color: green;
+        }
+
+        .absent {
+            color: red;
         }
 
         button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: green;
-            color: white;
+            margin-top: 25px;
+            padding: 13px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
+            background: #ef4444;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        .status {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
+        button:hover {
+            background: #dc2626;
         }
+
+        .back {
+            display: inline-block;
+            margin-bottom: 20px;
+            text-decoration: none;
+            color: #111827;
+            font-weight: bold;
+        }
+
+        .flash {
+            background: #ecfdf5;
+            color: #047857;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        @media(max-width: 700px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th,
+            td {
+                padding: 8px;
+            }
+        }
+
     </style>
+
 </head>
 
 <body>
 
-<h1>Mark Attendance</h1>
+<div class="container">
 
-<div class="nav">
-    <a href="/dashboard">Dashboard</a>
-    <a href="/student">Students</a>
-    <a href="/report">Report</a>
+    <a href="/dashboard" class="back">
+        ← Back to Dashboard
+    </a>
+
+    <div class="header">
+
+        <h1>📋 Smart Attendance</h1>
+
+        <p>
+            Subject-wise and date-wise attendance management
+        </p>
+
+    </div>
+
+
+    {% with messages = get_flashed_messages() %}
+
+        {% if messages %}
+
+            {% for message in messages %}
+
+                <div class="flash">
+                    {{ message }}
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+    {% endwith %}
+
+
+    <form action="/save_attendance"
+          method="POST">
+
+
+        <!-- ATTENDANCE SETTINGS -->
+
+        <div class="card">
+
+            <h2>Attendance Details</h2>
+
+            <br>
+
+            <div class="form-row">
+
+                <div>
+
+                    <label>
+                        Select Subject
+                    </label>
+
+                    <select name="subject_id" required>
+
+                        <option value="">
+                            -- Select Subject --
+                        </option>
+
+                        {% for subject in subjects %}
+
+                        <option value="{{ subject.id }}">
+
+                            {{ subject.subject_name }}
+                            ({{ subject.subject_code }})
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Attendance Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="attendance_date"
+                        value="{{ current_date }}"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STUDENT LIST -->
+
+        <div class="card">
+
+            <h2>Students</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            #
+                        </th>
+
+                        <th>
+                            Register No
+                        </th>
+
+                        <th>
+                            Student Name
+                        </th>
+
+                        <th>
+                            Attendance
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+                        <td>
+                            {{ student.reg_no }}
+                        </td>
+
+                        <td>
+                            {{ student.name }}
+                        </td>
+
+                        <td>
+
+                            <div class="radio-group">
+
+                                <label class="present">
+
+                                    <input
+                                        type="radio"
+                                        name="{{ student.reg_no }}"
+                                        value="Present"
+                                        required
+                                    >
+
+                                    Present
+
+                                </label>
+
+
+                                <label class="absent">
+
+                                    <input
+                                        type="radio"
+                                        name="{{ student.reg_no }}"
+                                        value="Absent"
+                                    >
+
+                                    Absent
+
+                                </label>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+            {% if students %}
+
+            <button type="submit">
+
+                💾 Save Attendance
+
+            </button>
+
+            {% else %}
+
+            <p style="margin-top:20px;">
+                No students found.
+                Please add students first.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+    </form>
+
 </div>
 
-<form method="POST" action="/save_attendance">
-
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Register No</th>
-        <th>Status</th>
-    </tr>
-
-    {% for student in students %}
-    <tr>
-        <td>{{ student[1] }}</td>
-        <td>{{ student[2] }}</td>
-        <td>
-            <div class="status">
-                <label>
-                    <input type="radio" name="{{ student[2] }}" value="Present" required>
-                    Present
-                </label>
-
-                <label>
-                    <input type="radio" name="{{ student[2] }}" value="Absent">
-                    Absent
-                </label>
-            </div>
-        </td>
-    </tr>
-    {% endfor %}
-
-</table>
-
-<button type="submit">Save Attendance</button>
-
-</form>
-
 </body>
+
 </html>

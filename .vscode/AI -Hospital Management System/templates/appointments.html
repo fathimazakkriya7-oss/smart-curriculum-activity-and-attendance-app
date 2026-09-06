@@ -1,0 +1,72 @@
+<h2>Book Appointment</h2>
+
+<form method="POST">
+
+    <label>Patient:</label>
+
+    <select name="patient" required>
+        <option value="">Select Patient</option>
+
+        {% for patient in patients %}
+        <option value="{{ patient.name }}">
+            {{ patient.name }}
+        </option>
+        {% endfor %}
+
+    </select>
+
+
+    <label>Doctor:</label>
+
+    <select name="doctor" required>
+        <option value="">Select Doctor</option>
+
+        {% for doctor in doctors %}
+        <option value="{{ doctor.name }}">
+            Dr. {{ doctor.name }} - {{ doctor.specialization }}
+        </option>
+        {% endfor %}
+
+    </select>
+
+
+    <label>Date:</label>
+    <input type="date" name="date" required>
+
+
+    <label>Time:</label>
+    <input type="time" name="time" required>
+
+
+    <button type="submit">
+        📅 Book Appointment
+    </button>
+
+</form>
+
+
+<h2>Appointment List</h2>
+
+<table>
+
+    <tr>
+        <th>ID</th>
+        <th>Patient</th>
+        <th>Doctor</th>
+        <th>Date</th>
+        <th>Time</th>
+    </tr>
+
+    {% for appointment in appointments %}
+
+    <tr>
+        <td>{{ appointment.id }}</td>
+        <td>{{ appointment.patient }}</td>
+        <td>{{ appointment.doctor }}</td>
+        <td>{{ appointment.date }}</td>
+        <td>{{ appointment.time }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>

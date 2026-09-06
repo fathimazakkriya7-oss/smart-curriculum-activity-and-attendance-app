@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Patient Management</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f6f9;
+            margin: 0;
+        }
+
+        header {
+            background: #1976d2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        input, select {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            background: #1976d2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #1976d2;
+            color: white;
+        }
+
+        a {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #1976d2;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>🏥 Patient Management</h1>
+</header>
+
+<div class="container">
+
+    <a href="/">← Back to Dashboard</a>
+
+    <h2>Add Patient</h2>
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Patient Name"
+            required
+        >
+
+        <input
+            type="number"
+            name="age"
+            placeholder="Age"
+            required
+        >
+
+        <select name="gender">
+
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+
+        </select>
+
+        <input
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+        >
+
+        <input
+            type="text"
+            name="disease"
+            placeholder="Disease"
+        >
+
+        <button type="submit">
+            Add Patient
+        </button>
+
+    </form>
+
+
+    <h2>Patient List</h2>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Phone</th>
+            <th>Disease</th>
+        </tr>
+
+        {% for patient in patients %}
+
+        <tr>
+
+            <td>{{ patient.id }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.age }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.phone }}</td>
+            <td>{{ patient.disease }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>

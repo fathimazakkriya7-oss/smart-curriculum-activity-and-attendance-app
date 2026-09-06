@@ -2,11 +2,9 @@
 <html>
 
 <head>
-
-    <title>Attendance Report</title>
+    <title>Subject-wise Attendance</title>
 
     <style>
-
         * {
             box-sizing: border-box;
         }
@@ -34,11 +32,9 @@
 
         .container {
             width: 95%;
-            max-width: 1100px;
+            max-width: 1300px;
             margin: 30px auto;
         }
-
-        /* NAVIGATION */
 
         .navigation {
             text-align: center;
@@ -58,8 +54,6 @@
         .navigation a:hover {
             background: #055fc0;
         }
-
-        /* TABLE */
 
         .table-box {
             background: white;
@@ -91,47 +85,24 @@
             background: #f5f5f5;
         }
 
-        /* PRESENT DAYS */
-
-        .present {
-            color: green;
-            font-weight: bold;
-        }
-
-        /* TOTAL DAYS */
-
-        .total {
-            color: #333;
-            font-weight: bold;
-        }
-
-        /* PERCENTAGE */
-
-        .percentage {
-            font-weight: bold;
-        }
-
         .good {
             color: green;
+            font-weight: bold;
         }
 
         .medium {
             color: orange;
+            font-weight: bold;
         }
 
         .poor {
             color: red;
+            font-weight: bold;
         }
 
-        /* EMPTY */
-
-        .empty {
-            text-align: center;
-            padding: 30px;
-            color: #777;
+        .no-data {
+            color: #999;
         }
-
-        /* BACK BUTTON */
 
         .back {
             display: inline-block;
@@ -147,34 +118,25 @@
             background: #444;
         }
 
-        /* MOBILE */
-
         @media(max-width: 700px) {
-
             th,
             td {
-                padding: 10px;
-                font-size: 13px;
+                padding: 9px;
+                font-size: 12px;
             }
-
         }
-
     </style>
-
 </head>
 
 
 <body>
 
-
-<!-- HEADER -->
-
 <div class="header">
 
-    <h1>📊 Attendance Report</h1>
+    <h1>📚 Subject-wise Attendance</h1>
 
     <p>
-        Student Attendance Summary
+        Attendance Performance for Each Subject
     </p>
 
 </div>
@@ -224,11 +186,13 @@
 
                     <th>Register No</th>
 
-                    <th>Present Days</th>
+                    {% for subject in subjects %}
 
-                    <th>Total Days</th>
+                    <th>
+                        {{ subject.subject_name }}
+                    </th>
 
-                    <th>Percentage</th>
+                    {% endfor %}
 
                 </tr>
 
@@ -237,75 +201,74 @@
 
             <tbody>
 
-                {% for student in records %}
+                {% for student in report %}
 
                 <tr>
 
-                    <!-- STUDENT NAME -->
-
                     <td>
-                        {{ student.name }}
+                        <strong>{{ student.name }}</strong>
                     </td>
-
-
-                    <!-- REGISTER NUMBER -->
 
                     <td>
                         {{ student.reg_no }}
                     </td>
 
 
-                    <!-- PRESENT DAYS -->
+                    {% for subject in student.subjects %}
 
-                    <td class="present">
-                        {{ student.present }}
-                    </td>
+                    <td>
 
+                        {% if subject.total > 0 %}
 
-                    <!-- TOTAL DAYS -->
+                            {% if subject.percentage >= 75 %}
 
-                    <td class="total">
-                        {{ student.total }}
-                    </td>
+                                <span class="good">
+                                    {{ subject.percentage }}%
+                                </span>
 
+                            {% elif subject.percentage >= 50 %}
 
-                    <!-- PERCENTAGE -->
+                                <span class="medium">
+                                    {{ subject.percentage }}%
+                                </span>
 
-                    <td class="percentage">
+                            {% else %}
 
-                        {% if student.percentage >= 75 %}
+                                <span class="poor">
+                                    {{ subject.percentage }}%
+                                </span>
 
-                            <span class="good">
-                                {{ student.percentage }}%
-                            </span>
+                            {% endif %}
 
-                        {% elif student.percentage >= 50 %}
+                            <br>
 
-                            <span class="medium">
-                                {{ student.percentage }}%
-                            </span>
+                            <small>
+                                {{ subject.present }}/{{ subject.total }}
+                            </small>
 
                         {% else %}
 
-                            <span class="poor">
-                                {{ student.percentage }}%
+                            <span class="no-data">
+                                No Data
                             </span>
 
                         {% endif %}
 
                     </td>
 
-                </tr>
+                    {% endfor %}
 
+                </tr>
 
                 {% else %}
 
                 <tr>
 
-                    <td colspan="5" class="empty">
-
-                        No attendance records found.
-
+                    <td
+                        colspan="{{ subjects|length + 2 }}"
+                        class="no-data"
+                    >
+                        No students found.
                     </td>
 
                 </tr>
@@ -319,17 +282,12 @@
     </div>
 
 
-    <!-- BACK BUTTON -->
-
     <a href="/dashboard" class="back">
-
         ← Back to Dashboard
-
     </a>
 
 
 </div>
-
 
 </body>
 

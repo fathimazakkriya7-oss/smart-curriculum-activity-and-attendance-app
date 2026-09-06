@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Activities</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            color: #333;
+        }
+
+        .header {
+            background: #4f46e5;
+            color: white;
+            padding: 20px 40px;
+        }
+
+        .header h1 {
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .student-info,
+        .summary,
+        .table-box {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .student-info h2 {
+            margin-top: 0;
+            color: #4f46e5;
+        }
+
+        .summary {
+            text-align: center;
+        }
+
+        .summary h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .average {
+            font-size: 35px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .back {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .back:hover {
+            background: #3730a3;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 20px;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            .table-box {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <div class="header">
+        <h1>🏆 My Activities</h1>
+    </div>
+
+
+    <div class="container">
+
+        <!-- Student Information -->
+
+        <div class="student-info">
+
+            <h2>{{ student['name'] }}</h2>
+
+            <p>
+                <strong>Register Number:</strong>
+                {{ student['reg_no'] }}
+            </p>
+
+            <p>
+                <strong>Class:</strong>
+                {{ student['student_class'] }}
+            </p>
+
+            <p>
+                <strong>Department:</strong>
+                {{ student['department'] }}
+            </p>
+
+        </div>
+
+
+        <!-- Activity Summary -->
+
+        <div class="summary">
+
+            <h3>Total Activities</h3>
+
+            <div class="average">
+                {{ total }}
+            </div>
+
+            <h3>Activity Average</h3>
+
+            <div class="average">
+                {{ average }}%
+            </div>
+
+        </div>
+
+
+        <!-- Activities Table -->
+
+        <div class="table-box">
+
+            <h2>Activity History</h2>
+
+            {% if activities %}
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Activity</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for activity in activities %}
+
+                    <tr>
+
+                        <td>
+                            {{ activity['activity_name'] }}
+                        </td>
+
+                        <td class="score">
+                            {{ activity['score'] }}
+                        </td>
+
+                        <td>
+                            {{ activity['date'] }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            {% else %}
+
+                <p>No activities have been recorded yet.</p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Back Button -->
+
+        <a href="/my_dashboard" class="back">
+            ← Back to Dashboard
+        </a>
+
+    </div>
+
+</body>
+</html>

@@ -1,85 +1,1020 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Dashboard</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Academic Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
-        body {
-            font-family: Arial;
-            background: #f2f4f8;
-            text-align: center;
+
+        * {
+            box-sizing: border-box;
         }
 
-        h1 {
-            margin-top: 20px;
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f5f7fb;
+            color: #1f2937;
         }
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        .header {
+            background: linear-gradient(135deg, #111827, #374151);
+            color: white;
+            padding: 38px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 34px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            color: #d1d5db;
+            font-size: 16px;
+        }
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
 
         .container {
+            width: 94%;
+            max-width: 1450px;
+            margin: 30px auto;
+        }
+
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .navigation {
             display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
             justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 17px;
+            background: #1f2937;
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+            border: 1px solid #374151;
+        }
+
+        .btn:hover {
+            background: #111827;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+        }
+
+        /* =========================
+           ALERT
+        ========================= */
+
+        .alert {
+            background: #fff7d6;
+            border-left: 6px solid #eab308;
+            padding: 17px 20px;
+            border-radius: 12px;
+            margin-bottom: 28px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            color: #713f12;
+        }
+
+        /* =========================
+           STAT CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
-            margin-top: 40px;
+            margin-bottom: 30px;
         }
 
         .card {
             background: white;
-            padding: 20px;
-            width: 200px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 25px 15px;
+            text-align: center;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f4;
+            transition: 0.25s;
         }
 
-        .number {
-            font-size: 30px;
-            font-weight: bold;
-            margin-top: 10px;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.11);
         }
 
-        .nav {
-            margin-top: 20px;
+        .card h2 {
+            margin: 0;
+            font-size: 32px;
+            color: #111827;
         }
 
-        .nav a {
-            margin: 10px;
-            text-decoration: none;
-            padding: 8px 12px;
-            background: #007bff;
+        .card p {
+            margin: 10px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* =========================
+           CHARTS
+        ========================= */
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .chart-card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f4;
+        }
+
+        .chart-card h2 {
+            margin: 0 0 20px;
+            font-size: 20px;
+            color: #111827;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 320px;
+        }
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+            border: 1px solid #eef0f4;
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #111827;
+            font-size: 21px;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-box {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th {
+            background: #1f2937;
             color: white;
-            border-radius: 5px;
+            padding: 14px 12px;
+            font-size: 14px;
+            text-align: center;
         }
 
-        .nav a:hover {
-            background: #0056b3;
+        td {
+            padding: 14px 12px;
+            text-align: center;
+            border-bottom: 1px solid #edf0f3;
+            font-size: 14px;
         }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .good {
+            display: inline-block;
+            background: #dcfce7;
+            color: #15803d;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .risk {
+            display: inline-block;
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* =========================
+           PROFILE BUTTON
+        ========================= */
+
+        td .btn {
+            padding: 7px 13px;
+            font-size: 13px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            padding: 25px 10px;
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 1200px) {
+
+            .cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+        }
+
+        @media (max-width: 850px) {
+
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .container {
+                width: 92%;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .navigation .btn {
+                width: 100%;
+            }
+
+            .header {
+                padding: 30px 15px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .chart-card,
+            .section {
+                padding: 18px;
+            }
+
+        }
+
     </style>
+
 </head>
+
+
 <body>
 
-<h1>Attendance Dashboard</h1>
 
-<div class="nav">
-    <a href="/student">Students</a>
-    <a href="/attendance">Attendance</a>
-    <a href="/report">Report</a>
+<!-- =========================
+     HEADER
+========================= -->
+
+<div class="header">
+
+    <h1>🎓 Smart Academic Dashboard</h1>
+
+    <p>
+        Curriculum • Attendance • Activities • Performance
+    </p>
+
 </div>
+
 
 <div class="container">
 
-    <div class="card">
-        <h3>Total Students</h3>
-        <div class="number">{{ total_students }}</div>
-    </div>
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<div class="navigation">
+
+    <a href="/dashboard" class="btn">
+        🏠 Dashboard
+    </a>
+
+    <a href="/student" class="btn">
+        👨‍🎓 Students
+    </a>
+
+    <a href="/attendance" class="btn">
+        📝 Attendance
+    </a>
+
+    <a href="/report" class="btn">
+        📋 Attendance Report
+    </a>
+
+    <a href="/subject_report" class="btn">
+        📚 Subject Report
+    </a>
+
+    <a href="/subjects" class="btn">
+        📖 Subjects
+    </a>
+
+    <a href="/curriculum" class="btn">
+        📘 Curriculum
+    </a>
+
+    <a href="/activities" class="btn">
+        🎯 Activities
+    </a>
+
+    <a href="/marks" class="btn">
+        📝 Marks
+    </a>
+
+    <a href="/performance" class="btn">
+        📊 Performance
+    </a>
+
+    <a href="/logout" class="btn">
+        🚪 Logout
+    </a>
+
+</div>
+
+
+<!-- =========================
+     ATTENDANCE ALERT
+========================= -->
+
+{% if at_risk_count > 0 %}
+
+<div class="alert">
+
+    ⚠️
+
+    <strong>Attention Required:</strong>
+
+    {{ at_risk_count }}
+
+    student(s) have attendance below 75%.
+
+</div>
+
+{% endif %}
+
+
+<!-- =========================
+     STATISTICS
+========================= -->
+
+<div class="cards">
+
 
     <div class="card">
-        <h3>Present</h3>
-        <div class="number">{{ present }}</div>
+
+        <h2>
+            {{ total_students }}
+        </h2>
+
+        <p>
+            👨‍🎓 Total Students
+        </p>
+
     </div>
 
+
     <div class="card">
-        <h3>Absent</h3>
-        <div class="number">{{ absent }}</div>
+
+        <h2>
+            {{ total_attendance }}
+        </h2>
+
+        <p>
+            📝 Attendance Records
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            {{ present_count }}
+        </h2>
+
+        <p>
+            🟢 Present
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            {{ absent_count }}
+        </h2>
+
+        <p>
+            🔴 Absent
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            {{ overall_attendance }}%
+        </h2>
+
+        <p>
+            📊 Overall Attendance
+        </p>
+
     </div>
 
 </div>
 
+
+<!-- =========================
+     CHARTS
+========================= -->
+
+<div class="chart-grid">
+
+
+    <!-- ATTENDANCE CHART -->
+
+    <div class="chart-card">
+
+        <h2>
+            📝 Attendance Overview
+        </h2>
+
+        <div class="chart-container">
+
+            <canvas id="attendanceChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- SUBJECT CHART -->
+
+    <div class="chart-card">
+
+        <h2>
+            📚 Subject-wise Attendance
+        </h2>
+
+        <div class="chart-container">
+
+            <canvas id="subjectChart"></canvas>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     TOP STUDENTS
+========================= -->
+
+<div class="section">
+
+    <h2>
+        🏆 Top Performing Students
+    </h2>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Rank</th>
+                    <th>Student</th>
+                    <th>Register No</th>
+                    <th>Attendance</th>
+                    <th>Status</th>
+                    <th>Profile</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for student in top_students %}
+
+                <tr>
+
+                    <td>
+                        🏅 {{ loop.index }}
+                    </td>
+
+                    <td>
+                        <strong>{{ student.name }}</strong>
+                    </td>
+
+                    <td>
+                        {{ student.reg_no }}
+                    </td>
+
+                    <td>
+                        <strong>{{ student.percentage }}%</strong>
+                    </td>
+
+                    <td>
+
+                        <span class="good">
+                            🟢 Good
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="/student_profile/{{ student.id }}"
+                            class="btn">
+
+                            View Profile
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="6">
+                        No attendance data available.
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     AT RISK STUDENTS
+========================= -->
+
+<div class="section">
+
+    <h2>
+        ⚠️ Students Needing Attention
+    </h2>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student</th>
+                    <th>Register No</th>
+                    <th>Present</th>
+                    <th>Total</th>
+                    <th>Attendance</th>
+                    <th>Risk</th>
+                    <th>Profile</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for student in risk_students %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ student.name }}</strong>
+                    </td>
+
+                    <td>
+                        {{ student.reg_no }}
+                    </td>
+
+                    <td>
+                        {{ student.present }}
+                    </td>
+
+                    <td>
+                        {{ student.total }}
+                    </td>
+
+                    <td>
+                        <strong>{{ student.percentage }}%</strong>
+                    </td>
+
+                    <td>
+
+                        <span class="risk">
+                            🔴 At Risk
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="/student_profile/{{ student.id }}"
+                            class="btn">
+
+                            View Profile
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+            {% else %}
+
+                <tr>
+
+                    <td colspan="7">
+
+                        🎉 No students are currently
+                        below 75% attendance.
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ALL STUDENTS
+========================= -->
+
+<div class="section">
+
+    <h2>
+        👨‍🎓 Student Attendance Overview
+    </h2>
+
+    <div class="table-box">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Student</th>
+                    <th>Register No</th>
+                    <th>Present</th>
+                    <th>Total</th>
+                    <th>Attendance</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for student in student_data %}
+
+                <tr>
+
+                    <td>
+                        <strong>{{ student.name }}</strong>
+                    </td>
+
+                    <td>
+                        {{ student.reg_no }}
+                    </td>
+
+                    <td>
+                        {{ student.present }}
+                    </td>
+
+                    <td>
+                        {{ student.total }}
+                    </td>
+
+                    <td>
+                        <strong>{{ student.percentage }}%</strong>
+                    </td>
+
+                    <td>
+
+                        {% if student.percentage >= 75 %}
+
+                            <span class="good">
+                                🟢 Good
+                            </span>
+
+                        {% else %}
+
+                            <span class="risk">
+                                🔴 At Risk
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<div class="footer">
+
+    🎓 Smart Academic Dashboard
+
+    <br>
+
+    Curriculum • Attendance • Activities • Performance
+
+    <br><br>
+
+    © 2026 Smart Academic Management System
+
+</div>
+
+
+</div>
+
+
+<!-- =========================
+     CHART JAVASCRIPT
+========================= -->
+
+<script>
+
+
+/* =========================
+   ATTENDANCE DOUGHNUT CHART
+========================= */
+
+const attendanceCanvas =
+    document.getElementById("attendanceChart");
+
+new Chart(
+    attendanceCanvas,
+    {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: [
+                "Present",
+                "Absent"
+            ],
+
+            datasets: [{
+
+                data: [
+                    {{ present_count }},
+                    {{ absent_count }}
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    position: "bottom"
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================
+   SUBJECT ATTENDANCE CHART
+========================= */
+
+const subjectNames = [
+
+    {% for subject in subject_data %}
+
+        {{ subject.name | tojson }}
+
+        {% if not loop.last %},{% endif %}
+
+    {% endfor %}
+
+];
+
+
+const subjectPercentages = [
+
+    {% for subject in subject_data %}
+
+        {{ subject.percentage }}
+
+        {% if not loop.last %},{% endif %}
+
+    {% endfor %}
+
+];
+
+
+const subjectCanvas =
+    document.getElementById("subjectChart");
+
+
+new Chart(
+    subjectCanvas,
+    {
+
+        type: "bar",
+
+        data: {
+
+            labels: subjectNames,
+
+            datasets: [{
+
+                label: "Attendance (%)",
+
+                data: subjectPercentages
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+            plugins: {
+
+                legend: {
+
+                    display: true
+
+                }
+
+            },
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true,
+
+                    max: 100,
+
+                    ticks: {
+
+                        callback: function(value) {
+
+                            return value + "%";
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+
 </body>
+
 </html>

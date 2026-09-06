@@ -8,7 +8,7 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
 
-    <title>Student Activities</title>
+    <title>Marks Management</title>
 
     <style>
 
@@ -24,7 +24,7 @@
         }
 
         .container {
-            width: 90%;
+            width: 92%;
             max-width: 1200px;
             margin: 30px auto;
         }
@@ -62,12 +62,13 @@
 
         form {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            grid-template-columns: repeat(5, 1fr);
             gap: 12px;
         }
 
         input,
         select {
+            width: 100%;
             padding: 12px;
             border: 1px solid #cbd5e1;
             border-radius: 8px;
@@ -78,9 +79,10 @@
             border: none;
             background: #2563eb;
             color: white;
-            padding: 12px 18px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
+            font-size: 14px;
         }
 
         button:hover {
@@ -103,7 +105,7 @@
             background: #f1f5f9;
         }
 
-        .score {
+        .mark {
             font-weight: bold;
         }
 
@@ -136,7 +138,7 @@
             }
 
             table {
-                font-size: 13px;
+                font-size: 12px;
             }
 
         }
@@ -151,7 +153,7 @@
 
     <div class="header">
 
-        <h1>🎯 Student Activity Management</h1>
+        <h1>📝 Marks Management</h1>
 
         <a href="/dashboard" class="back">
             ← Dashboard
@@ -177,9 +179,11 @@
     {% endwith %}
 
 
+    <!-- Add Marks -->
+
     <div class="card">
 
-        <h2>➕ Add Student Activity</h2>
+        <h2>➕ Enter Student Marks</h2>
 
         <form method="POST">
 
@@ -203,43 +207,29 @@
             </select>
 
 
-            <select name="activity_name" required>
+            <select name="subject_id" required>
 
                 <option value="">
-                    Select Activity
+                    Select Subject
                 </option>
 
-                <option value="Assignment">
-                    Assignment
-                </option>
+                {% for subject in subjects %}
 
-                <option value="Quiz">
-                    Quiz
-                </option>
+                    <option value="{{ subject.id }}">
 
-                <option value="Seminar">
-                    Seminar
-                </option>
+                        {{ subject.subject_name }}
 
-                <option value="Project">
-                    Project
-                </option>
+                    </option>
 
-                <option value="Competition">
-                    Competition
-                </option>
-
-                <option value="Presentation">
-                    Presentation
-                </option>
+                {% endfor %}
 
             </select>
 
 
             <input
                 type="number"
-                name="score"
-                placeholder="Score"
+                name="internal_mark"
+                placeholder="Internal Mark"
                 min="0"
                 max="100"
                 step="0.01"
@@ -248,14 +238,28 @@
 
 
             <input
-                type="date"
-                name="date"
+                type="number"
+                name="assignment_mark"
+                placeholder="Assignment Mark"
+                min="0"
+                max="100"
+                step="0.01"
                 required
             >
 
 
+            <input
+                type="number"
+                name="quiz_mark"
+                placeholder="Quiz Mark"
+                min="0"
+                max="100"
+                step="0.01"
+                required
+            >
+
             <button type="submit">
-                Add Activity
+                Save Marks
             </button>
 
         </form>
@@ -263,11 +267,13 @@
     </div>
 
 
+    <!-- Marks Table -->
+
     <div class="card">
 
-        <h2>📊 Activity Records</h2>
+        <h2>📊 Marks Records</h2>
 
-        {% if activities %}
+        {% if marks %}
 
         <table>
 
@@ -276,44 +282,44 @@
                 <tr>
 
                     <th>Student</th>
-
                     <th>Register No</th>
-
-                    <th>Activity</th>
-
-                    <th>Score</th>
-
-                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Internal</th>
+                    <th>Assignment</th>
+                    <th>Quiz</th>
 
                 </tr>
 
             </thead>
 
-
             <tbody>
 
-                {% for activity in activities %}
+                {% for mark in marks %}
 
                 <tr>
 
                     <td>
-                        {{ activity.name }}
+                        {{ mark.name }}
                     </td>
 
                     <td>
-                        {{ activity.reg_no }}
+                        {{ mark.reg_no }}
                     </td>
 
                     <td>
-                        {{ activity.activity_name }}
+                        {{ mark.subject_name }}
                     </td>
 
-                    <td class="score">
-                        {{ activity.score }}
+                    <td class="mark">
+                        {{ mark.internal_mark }}
                     </td>
 
-                    <td>
-                        {{ activity.date }}
+                    <td class="mark">
+                        {{ mark.assignment_mark }}
+                    </td>
+
+                    <td class="mark">
+                        {{ mark.quiz_mark }}
                     </td>
 
                 </tr>
@@ -327,7 +333,7 @@
         {% else %}
 
             <p>
-                No activities recorded yet.
+                No marks records available yet.
             </p>
 
         {% endif %}

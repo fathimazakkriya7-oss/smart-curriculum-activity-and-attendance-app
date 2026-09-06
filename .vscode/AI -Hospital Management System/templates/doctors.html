@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Doctor Management</title>
+
+    <style>
+
+        body {
+            font-family: Arial;
+            background-color: #f2f6f9;
+            margin: 0;
+        }
+
+        header {
+            background-color: #1976d2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        input {
+            padding: 12px;
+            margin: 5px;
+        }
+
+        button {
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            background-color: white;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #1976d2;
+            color: white;
+        }
+
+        a {
+            color: #1976d2;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<header>
+
+    <h1>👨‍⚕️ Doctor Management</h1>
+
+</header>
+
+
+<div class="container">
+
+    <a href="/">← Back to Dashboard</a>
+
+    <h2>Add Doctor</h2>
+
+
+    <form method="POST">
+
+        <input
+            type="text"
+            name="name"
+            placeholder="Doctor Name"
+            required
+        >
+
+        <input
+            type="text"
+            name="specialization"
+            placeholder="Specialization"
+            required
+        >
+
+        <input
+            type="text"
+            name="phone"
+            placeholder="Phone Number"
+        >
+
+        <button type="submit">
+            Add Doctor
+        </button>
+
+    </form>
+
+
+    <h2>Doctor List</h2>
+
+
+    <table>
+
+        <tr>
+
+            <th>ID</th>
+            <th>Name</th>
+            <th>Specialization</th>
+            <th>Phone</th>
+
+        </tr>
+
+
+        {% for doctor in doctors %}
+
+        <tr>
+
+            <td>{{ doctor.id }}</td>
+
+            <td>{{ doctor.name }}</td>
+
+            <td>{{ doctor.specialization }}</td>
+
+            <td>{{ doctor.phone }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+
+</html>
